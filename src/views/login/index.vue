@@ -113,7 +113,8 @@ export default {
       // 保存用户登录信息到story中的user 模块
       this.$store.commit('user/setUserInfo', userInfo)
       // 跳转到首页
-      this.$router.push('/')
+      const path = this.$route.query.backUrl || '/'
+      this.$router.replace(path)
     }
   },
 

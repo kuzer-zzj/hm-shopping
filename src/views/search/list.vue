@@ -49,7 +49,7 @@ export default {
     }
   },
   async created () {
-    const { data: { list } } = await getProList({ page: this.page, goodsName: this.querySearch })
+    const { data: { list } } = await getProList({ categoryId: this.$route.query.categoryId, page: this.page, goodsName: this.querySearch })
     console.log('搜索商品列表：', list)
     this.goodsList = list.data
   }

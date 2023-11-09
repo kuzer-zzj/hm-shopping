@@ -9,3 +9,20 @@ export const getProList = (paramObj) => {
     }
   })
 }
+
+export const getGoodsDetail = (goodsId) => {
+  return request.get('/goods/detail', {
+    params: {
+      // 接口请求参数
+      goodsId
+    }
+  })
+}
+
+export const getProComments = (goodsId, limit) => {
+  return request.get('/comment/listRows', {
+    params: {
+      goodsId, limit
+    }
+  })
+}
