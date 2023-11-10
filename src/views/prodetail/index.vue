@@ -87,6 +87,7 @@
         <span>首页</span>
       </div>
       <div class="icon-cart">
+        <span v-if="cartTotal > 0" class="num" >{{ cartTotal }}</span>
         <van-icon name="shopping-cart-o" />
         <span>购物车</span>
       </div>
@@ -152,7 +153,7 @@ export default {
       defaultImg,
       show: false,
       mode: 'cart',
-      addCount: 1,
+      addCount: 0,
       cartTotal: 0
     }
   },
@@ -415,6 +416,22 @@ export default {
       background-color: #cccccc;
     }
   }
+  .footer .icon-cart {
+  position: relative;
+  padding: 0 6px;
+  .num {
+    z-index: 999;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    min-width: 16px;
+    padding: 0 4px;
+    color: #fff;
+    text-align: center;
+    background-color: #ee0a24;
+    border-radius: 50%;
+  }
+}
 }
 
 .tips {
