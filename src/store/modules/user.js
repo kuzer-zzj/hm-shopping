@@ -12,5 +12,12 @@ export default {
       state.userInfo = userInfo
       setUserInfo(userInfo)
     }
+  },
+  actions: {
+    logout (context) {
+      context.commit('setUserInfo', {})
+      // 清除购物车
+      context.commit('cart/setCartList', [], { root: true })
+    }
   }
 }

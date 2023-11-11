@@ -22,3 +22,12 @@ export const submitOrder = (mode, param) => {
     isUsePoints: 0 // 是否使用积分
   })
 }
+
+export const getMyOrderList = (dataType, page) => {
+  return request.get('/order/list', {
+    params: {
+      dataType: dataType,
+      page: page
+    }
+  })
+}
