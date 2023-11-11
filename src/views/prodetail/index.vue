@@ -87,12 +87,12 @@
         <span>首页</span>
       </div>
       <div class="icon-cart">
-        <span v-if="cartTotal > 0" class="num" >{{ cartTotal }}</span>
+        <span v-if="cartTotal > 0" class="num" @click="$router.push('/cart')">{{ cartTotal }}</span>
         <van-icon name="shopping-cart-o" />
         <span>购物车</span>
       </div>
       <div class="btn-add" @click="addFn">加入购物车</div>
-      <div class="btn-buy" @click="toBuy">立刻购买</div>
+      <div class="btn-buy" @click="toBuy" >立刻购买</div>
     </div>
 
     <van-action-sheet
@@ -121,7 +121,7 @@
         </div>
         <div class="showbtn" v-if="detail.stock_total > 0">
           <div class="btn" @click="addCart" v-if="mode === 'cart'">加入购物车</div>
-          <div class="btn now" v-if="mode === 'buy'">立刻购买</div>
+          <div class="btn now" v-if="mode === 'buy'" @click ='goBuyNow'>立刻购买</div>
         </div>
         <div class="btn-none" v-else>该商品已抢完</div>
       </div>
@@ -134,9 +134,11 @@ import { getGoodsDetail, getProComments } from '@/api/product'
 import defaultImg from '@/assets/default-avatar.png'
 import CountBox from '@/components/CountBox.vue'
 import { addCarts } from '@/api/cart'
+import loginConfirm from '@/mixin/loginConfirm'
 
 export default {
   name: 'ProdetailIndex',
+  mixins: [loginConfirm],
   components: {
     CountBox
   },
@@ -169,6 +171,11 @@ export default {
       this.total = total
     },
     addFn () {
+      console.log('是否未登录：', this.isLogin())
+      if (this.isLogin()) {
+        console.log('未登录')
+        return
+      }
       this.tankuang()
       this.show = true
       this.mode = 'cart'
@@ -187,26 +194,18 @@ export default {
       this.$toast('添加购物车成功')
     },
     tankuang () {
-      if (!this.$store.getters.token) {
-        this.$dialog.confirm({
-          title: '温馨提示',
-          message: '此时需要先登录才能继续操作哦',
-          confirmButtonText: '去登录',
-          cancelButtonText: '再逛逛'
-        })
-          .then(() => {
-          // 跳到 /login 页
-            this.$router.replace({
-              path: '/login',
-              query: {
-                backUrl: this.$route.fullPath
-              }
-            })
-          })
-          .catch(() => {
-          // on cancel
-          })
-      }
+
+    },
+    goBuyNow () {
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'buyNow',
+          goodsId: this.goodsId,
+          skuId: this.detail.skuList[0].goods_sku_id,
+          count: this.addCount
+        }
+      })
     }
   },
   computed: {

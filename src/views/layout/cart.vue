@@ -44,7 +44,7 @@
           <span>合计：</span>
           <span>¥ <i class="totalPrice">{{selPrice}}</i></span>
         </div>
-        <div v-if="!isEdit " :class="{disabled:  selCount ===0}" class="goPay">结算({{selCount}})</div>
+        <div v-if="!isEdit " :class="{disabled:  selCount ===0}" class="goPay" @click="goPay">结算({{selCount}})</div>
         <div v-else class="delete" :class="{disabled:  selCount ===0}" @click ='handleDel'>删除 {{selCount}}</div>
       </div>
     </div>
@@ -100,6 +100,19 @@ export default {
       if (!this.selCount) return
       this.$store.dispatch('cart/delCartAction')
       this.isEdit = false
+    },
+    goPay () {
+      console.log(this.selCount)
+      if (this.selCount < 0) {
+        return
+      }
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'cart',
+          cartIds: this.cartList.map(item => item.id).join(',')
+        }
+      })
     }
   },
   watch: {
